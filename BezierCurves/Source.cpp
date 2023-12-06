@@ -20,6 +20,10 @@ private:
 
 	Spline MainCurve = Spline(Curve(0, -150, 100, -150, 0, -100, 67, -98));
 
+	int SelectedIndex = 0;
+
+	int SelectedPart = 0;
+
 public:
 	bool OnUserCreate() override
 	{
@@ -52,7 +56,7 @@ public:
 
 		MainCurve.MakeContinuous();
 
-		MainCurve.Curves[0].R2y += 5 * fElapsedTime;
+		//MainCurve.Curves[0].R2y += 5 * fElapsedTime;
 		
 		return true;
 	}

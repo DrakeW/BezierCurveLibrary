@@ -11,7 +11,7 @@ public:
 	{}
 
 	float R1x;
-	float R1y;
+	float R1y;	
 	float R2x;
 	float R2y;
 	float P1x;
