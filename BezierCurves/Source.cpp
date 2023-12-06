@@ -8,7 +8,6 @@ using namespace std;
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
 
-// Override base class with your custom functionality
 class Renderer : public olc::PixelGameEngine
 {
 public:
@@ -18,14 +17,14 @@ public:
 	}
 
 private:
-	vector<Curve> Curves;
+
+	Spline MainCurve = Spline(Curve(0, -150, 100, -150, 0, -100, 67, -98));
 
 public:
 	bool OnUserCreate() override
 	{
-		Curves.push_back(Curve(0, -150, 100, -150, 0, -100, 67, -98));
-		Continue(150, -30, 130, -60);
-		Continue(200, -120, 150, -180);
+		MainCurve.Add(150, -30, 130, -60);
+		MainCurve.Add(200, -120, 150, -180);
 		return true;
 	}
 
@@ -36,51 +35,28 @@ public:
 
 		int Samples = 500;
 
-		for (int d = 0; d < Curves.size(); d++)
+		for (int d = 0; d < MainCurve.Curves.size(); d++)
 		{
-			FillRect(Curves[d].R1x - 2, -Curves[d].R1y - 2, 4, 4, olc::MAGENTA);
-			FillRect(Curves[d].R2x - 2, -Curves[d].R2y - 2, 4, 4, olc::MAGENTA);
-			FillRect(Curves[d].P1x - 2, -Curves[d].P1y - 2, 4, 4, olc::GREEN);
-			FillRect(Curves[d].P2x - 2, -Curves[d].P2y - 2, 4, 4, olc::RED);
+			FillRect(MainCurve.Curves[d].R1x - 2, -MainCurve.Curves[d].R1y - 2, 4, 4, olc::MAGENTA);
+			FillRect(MainCurve.Curves[d].R2x - 2, -MainCurve.Curves[d].R2y - 2, 4, 4, olc::MAGENTA);
+			FillRect(MainCurve.Curves[d].P1x - 2, -MainCurve.Curves[d].P1y - 2, 4, 4, olc::GREEN);
+			FillRect(MainCurve.Curves[d].P2x - 2, -MainCurve.Curves[d].P2y - 2, 4, 4, olc::RED);
 		}
 
-		for (float t = 0; t < Samples * Curves.size(); t++)
+		for (float t = 0; t < Samples * MainCurve.Curves.size(); t++)
 		{
 			int Index = (int)(t / Samples);
-			pair<float, float> Point = Curves[Index].FindPoint((t / Samples) - (float)Index);
+			pair<float, float> Point = MainCurve.Curves[Index].GetPoint((t / Samples) - (float)Index);
 			FillRect(Point.first, -Point.second, 1, 1, olc::RED);
 		}
 
-		MakeContinue();
+		MainCurve.MakeContinuous();
 
-		Curves[0].R2y += 5 * fElapsedTime;
+		MainCurve.Curves[0].R2y += 5 * fElapsedTime;
 		
 		return true;
 	}
 
-	void Continue(int Rx, int Ry, int Px, int Py)
-	{
-		int LastIndex = Curves.size() - 1;
-		Curves.push_back(Curve(Curves[LastIndex].R2x, Curves[LastIndex].R2y, Rx, Ry, Curves[LastIndex].R2x + (Curves[LastIndex].R2x - Curves[LastIndex].P2x), Curves[LastIndex].R2y + (Curves[LastIndex].R2y - Curves[LastIndex].P2y), Px, Py));
-	}
-
-	void MakeContinue()
-	{
-		for (int i = 1; i < Curves.size(); i++)
-		{
-			if (Curves[i].R1x != Curves[i - 1].R2x || Curves[i].R1y != Curves[i - 1].R2y)
-			{
-				Curves[i].R1x = Curves[i - 1].R2x;
-				Curves[i].R1y = Curves[i - 1].R2y;
-			}
-
-			if (Curves[i].P1x != Curves[i - 1].R2x + (Curves[i - 1].R2x - Curves[i - 1].P2x) || Curves[i].P1y != Curves[i - 1].R2y + (Curves[i - 1].R2y - Curves[i - 1].P2y))
-			{
-				Curves[i].P1x = Curves[i - 1].R2x + (Curves[i - 1].R2x - Curves[i - 1].P2x);
-				Curves[i].P1y = Curves[i - 1].R2y + (Curves[i - 1].R2y - Curves[i - 1].P2y);
-			}
-		}
-	}
 };
 
 int main()
