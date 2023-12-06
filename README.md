@@ -6,7 +6,7 @@ This project is activly in development, so files you see other then "BezierCurve
 
 Classes:
     Curve:
-        Constructor Arguments:
+        Constructor Arguments: \n
             ((float)Root 1 X (R1x), (float)Root 1 Y (R2y), (float)Root 2 X (R2x), (float)Root 2 X (R2y), (float)Handle 1 X (P1x), (float)Handle 1 Y (P1y), (float)Handle 2 X (P2x), (float)Handle 2 Y (P2y))
         Functions:
             FindPoint:
