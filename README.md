@@ -38,6 +38,6 @@ Classes:
 
 --Extra Files--
 - olcPixelGameEngine.h
-  - This is not made by me, but by Javidx9. I use it to visualize to Bezier Cuves.
+     - This is not made by me, but by Javidx9. I use it to visualize to Bezier Cuves.
 - Source.cpp
- - This is just a test file for me to run olcPixelGameEngine.h on, and test the Bezier Cuves
+     - This is just a test file for me to run olcPixelGameEngine.h on, and test the Bezier Cuves
