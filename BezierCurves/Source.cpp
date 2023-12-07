@@ -28,6 +28,12 @@ private:
 
 	int Samples = 500;
 
+	enum CurrentAction
+	{
+		Moving,
+		Adding
+	};
+
 public:
 	bool OnUserCreate() override
 	{
@@ -40,6 +46,12 @@ public:
 	{
 
 		FillRect(0, 0, ScreenWidth(), ScreenHeight(), L' ');
+
+		for (int i = 0; i < MainCurve.Curves.size(); i++)
+		{
+			DrawLine(MainCurve.Curves[i].R1x, -MainCurve.Curves[i].R1y, MainCurve.Curves[i].P1x, -MainCurve.Curves[i].P1y, olc::VERY_DARK_GREY);
+			DrawLine(MainCurve.Curves[i].R2x, -MainCurve.Curves[i].R2y, MainCurve.Curves[i].P2x, -MainCurve.Curves[i].P2y, olc::VERY_DARK_GREY);
+		}
 
 		switch (SelectedPart)
 		{
@@ -88,25 +100,10 @@ public:
 		if (GetKey(olc::Key::SHIFT).bHeld)
 		{
 
-			if (GetKey(olc::Key::D).bPressed && SelectedIndex < MainCurve.Curves.size() - 1)
-			{
-				SelectedIndex += 1;
-				SelectedPart = 0;
-			}
-			if (GetKey(olc::Key::A).bPressed && SelectedIndex > 0)
-			{
-				SelectedIndex -= 1;
-				SelectedPart = 0;
-			}
-			if (GetKey(olc::Key::W).bPressed && SelectedPart < 3)
-			{
-				if (SelectedPart < 1 || SelectedIndex > MainCurve.Curves.size() - 2)
-					SelectedPart += 1;
-			}
-			if (GetKey(olc::Key::S).bPressed && SelectedPart > 0)
-			{
-				SelectedPart -= 1;
-			}
+			if (GetKey(olc::Key::D).bPressed && SelectedIndex < MainCurve.Curves.size() - 1){ SelectedIndex += 1; SelectedPart = 0; }
+			if (GetKey(olc::Key::A).bPressed && SelectedIndex > 0) { SelectedIndex -= 1; SelectedPart = 0; }
+			if (GetKey(olc::Key::W).bPressed && SelectedPart < 3 && (SelectedPart < 1 || SelectedIndex > MainCurve.Curves.size() - 2)) SelectedPart += 1;
+			if (GetKey(olc::Key::S).bPressed && SelectedPart > 0) SelectedPart -= 1;
 
 		}
 		else
