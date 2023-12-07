@@ -72,15 +72,24 @@ public:
 			break;
 		}
 
-		if (GetKey(olc::Key::D).bPressed && SelectedIndex < MainCurve.Curves.size() - 1) { SelectedIndex += 1; SelectedPart = 0; }
-		if (GetKey(olc::Key::A).bPressed && SelectedIndex > 0) { SelectedIndex -= 1; SelectedPart = 0; }
-		if (GetKey(olc::Key::W).bPressed && SelectedPart < 4)
+		if (GetKey(olc::Key::D).bPressed && SelectedIndex < MainCurve.Curves.size() - 1)
+		{ 
+			SelectedIndex += 1;
+			SelectedPart = 0; 
+		}
+		if (GetKey(olc::Key::A).bPressed && SelectedIndex > 0)
+		{
+			SelectedIndex -= 1;
+			SelectedPart = 0;
+		}
+		if (GetKey(olc::Key::W).bPressed && SelectedPart < 3)
 		{
 			if (!SelectedPart && SelectedIndex)
 			{
 				SelectedPart += 1;
 			}
-			SelectedPart += 1;
+			if (SelectedPart != 2 || SelectedIndex > MainCurve.Curves.size() - 2)
+				SelectedPart += 1;
 		}
 		if (GetKey(olc::Key::S).bPressed && SelectedPart > 0)
 		{
@@ -89,6 +98,27 @@ public:
 				SelectedPart -= 1;
 			}
 			SelectedPart -= 1;
+		}
+
+		if (GetKey(olc::Key::UP).bHeld)
+		{
+			switch (SelectedPart)
+			{
+			case 0:
+				MainCurve.Curves[SelectedIndex].R1y += 1;
+				break;
+			case 1:
+				MainCurve.Curves[SelectedIndex].P1y += 1;
+				break;
+			case 2:
+				MainCurve.Curves[SelectedIndex].P2y += 1;
+				break;
+			case 3:
+				MainCurve.Curves[SelectedIndex].R2y += 1;
+				break;
+			default:
+				break;
+			}
 		}
 
 		MainCurve.MakeContinuous();
