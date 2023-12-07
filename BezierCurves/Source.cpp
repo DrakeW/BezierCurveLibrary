@@ -54,6 +54,43 @@ public:
 			FillRect(Point.first, -Point.second, 1, 1, olc::RED);
 		}
 
+		switch (SelectedPart)
+		{
+		case 0:
+			FillRect(MainCurve.Curves[SelectedIndex].R1x - 2, -MainCurve.Curves[SelectedIndex].R1y - 2, 4, 4, olc::BLUE);
+			break;
+		case 1:
+			FillRect(MainCurve.Curves[SelectedIndex].P1x - 2, -MainCurve.Curves[SelectedIndex].P1y - 2, 4, 4, olc::BLUE);
+			break;
+		case 2:
+			FillRect(MainCurve.Curves[SelectedIndex].P2x - 2, -MainCurve.Curves[SelectedIndex].P2y - 2, 4, 4, olc::BLUE);
+			break;
+		case 3:
+			FillRect(MainCurve.Curves[SelectedIndex].R2x - 2, -MainCurve.Curves[SelectedIndex].R2y - 2, 4, 4, olc::BLUE);
+			break;
+		default:
+			break;
+		}
+
+		if (GetKey(olc::Key::D).bPressed && SelectedIndex < MainCurve.Curves.size() - 1) { SelectedIndex += 1; SelectedPart = 0; }
+		if (GetKey(olc::Key::A).bPressed && SelectedIndex > 0) { SelectedIndex -= 1; SelectedPart = 0; }
+		if (GetKey(olc::Key::W).bPressed && SelectedPart < 4)
+		{
+			if (!SelectedPart && SelectedIndex)
+			{
+				SelectedPart += 1;
+			}
+			SelectedPart += 1;
+		}
+		if (GetKey(olc::Key::S).bPressed && SelectedPart > 0)
+		{
+			if (SelectedPart == 2 && SelectedIndex)
+			{
+				SelectedPart -= 1;
+			}
+			SelectedPart -= 1;
+		}
+
 		MainCurve.MakeContinuous();
 
 		//MainCurve.Curves[0].R2y += 5 * fElapsedTime;
