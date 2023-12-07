@@ -47,20 +47,40 @@ public:
 		Curves.push_back(Curve(Curves[LastIndex].R2x, Curves[LastIndex].R2y, Rx, Ry, Curves[LastIndex].R2x + (Curves[LastIndex].R2x - Curves[LastIndex].P2x), Curves[LastIndex].R2y + (Curves[LastIndex].R2y - Curves[LastIndex].P2y), Px, Py));
 	}
 
-	void MakeContinuous()
+	void MakeContinuous(bool BackPriority = false)
 	{
-		for (int i = 1; i < Curves.size(); i++)
+		if (!BackPriority)
 		{
-			if (Curves[i].R1x != Curves[i - 1].R2x || Curves[i].R1y != Curves[i - 1].R2y)
+			for (int i = 1; i < Curves.size(); i++)
 			{
-				Curves[i].R1x = Curves[i - 1].R2x;
-				Curves[i].R1y = Curves[i - 1].R2y;
-			}
+				if (Curves[i].R1x != Curves[i - 1].R2x || Curves[i].R1y != Curves[i - 1].R2y)
+				{
+					Curves[i].R1x = Curves[i - 1].R2x;
+					Curves[i].R1y = Curves[i - 1].R2y;
+				}
 
-			if (Curves[i].P1x != Curves[i - 1].R2x + (Curves[i - 1].R2x - Curves[i - 1].P2x) || Curves[i].P1y != Curves[i - 1].R2y + (Curves[i - 1].R2y - Curves[i - 1].P2y))
+				if (Curves[i].P1x != Curves[i - 1].R2x + (Curves[i - 1].R2x - Curves[i - 1].P2x) || Curves[i].P1y != Curves[i - 1].R2y + (Curves[i - 1].R2y - Curves[i - 1].P2y))
+				{
+					Curves[i].P1x = Curves[i - 1].R2x + (Curves[i - 1].R2x - Curves[i - 1].P2x);
+					Curves[i].P1y = Curves[i - 1].R2y + (Curves[i - 1].R2y - Curves[i - 1].P2y);
+				}
+			}
+		}
+		else
+		{
+			for (int i = Curves.size() - 2; i >= 0; i--)
 			{
-				Curves[i].P1x = Curves[i - 1].R2x + (Curves[i - 1].R2x - Curves[i - 1].P2x);
-				Curves[i].P1y = Curves[i - 1].R2y + (Curves[i - 1].R2y - Curves[i - 1].P2y);
+				if (Curves[i].R2x != Curves[i + 1].R1x || Curves[i].R2y != Curves[i + 1].R1y)
+				{
+					Curves[i].R2x = Curves[i + 1].R1x;
+					Curves[i].R2y = Curves[i + 1].R1y;
+				}
+
+				if (Curves[i].P2x != Curves[i + 1].R1x + (Curves[i + 1].R1x - Curves[i + 1].P1x) || Curves[i].P2y != Curves[i + 1].R1y + (Curves[i + 1].R1y - Curves[i + 1].P1y))
+				{
+					Curves[i].P2x = Curves[i + 1].R1x + (Curves[i + 1].R1x - Curves[i + 1].P1x);
+					Curves[i].P2y = Curves[i + 1].R1y + (Curves[i + 1].R1y - Curves[i + 1].P1y);
+				}
 			}
 		}
 	}
