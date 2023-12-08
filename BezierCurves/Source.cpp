@@ -28,11 +28,15 @@ private:
 
 	int Samples = 500;
 
-	enum CurrentAction
+	pair<int, int> AddingPoint = { 50, 50 };
+
+	enum Actions
 	{
 		Moving,
 		Adding
 	};
+
+	Actions CurrentAction = Moving;
 
 public:
 	bool OnUserCreate() override
@@ -51,6 +55,124 @@ public:
 		{
 			DrawLine(MainCurve.Curves[i].R1x, -MainCurve.Curves[i].R1y, MainCurve.Curves[i].P1x, -MainCurve.Curves[i].P1y, olc::VERY_DARK_GREY);
 			DrawLine(MainCurve.Curves[i].R2x, -MainCurve.Curves[i].R2y, MainCurve.Curves[i].P2x, -MainCurve.Curves[i].P2y, olc::VERY_DARK_GREY);
+		}
+
+		if (GetKey(olc::Key::R).bPressed) CurrentAction = Adding;
+
+		switch (CurrentAction)
+		{
+		case Moving:
+
+			if (GetKey(olc::Key::SPACE).bPressed)
+			{
+				ControlSensitivity *= 2;
+			}
+			if (GetKey(olc::Key::SPACE).bReleased)
+			{
+				ControlSensitivity /= 2;
+			}
+
+			if (GetKey(olc::Key::SHIFT).bHeld)
+			{
+
+				if (GetKey(olc::Key::D).bPressed && SelectedIndex < MainCurve.Curves.size() - 1) { SelectedIndex += 1; SelectedPart = 0; }
+				if (GetKey(olc::Key::A).bPressed && SelectedIndex > 0) { SelectedIndex -= 1; SelectedPart = 0; }
+				if (GetKey(olc::Key::W).bPressed && SelectedPart < 3 && (SelectedPart < 1 || SelectedIndex > MainCurve.Curves.size() - 2)) SelectedPart += 1;
+				if (GetKey(olc::Key::S).bPressed && SelectedPart > 0) SelectedPart -= 1;
+
+			}
+			else
+			{
+
+				if (GetKey(olc::Key::W).bHeld)
+				{
+					switch (SelectedPart)
+					{
+					case 0:
+						MainCurve.Curves[SelectedIndex].R1y += ControlSensitivity * fElapsedTime;
+						break;
+					case 1:
+						MainCurve.Curves[SelectedIndex].P1y += ControlSensitivity * fElapsedTime;
+						break;
+					case 2:
+						MainCurve.Curves[SelectedIndex].P2y += ControlSensitivity * fElapsedTime;
+						break;
+					case 3:
+						MainCurve.Curves[SelectedIndex].R2y += ControlSensitivity * fElapsedTime;
+						break;
+					default:
+						break;
+					}
+				}
+				if (GetKey(olc::Key::S).bHeld)
+				{
+					switch (SelectedPart)
+					{
+					case 0:
+						MainCurve.Curves[SelectedIndex].R1y -= ControlSensitivity * fElapsedTime;
+						break;
+					case 1:
+						MainCurve.Curves[SelectedIndex].P1y -= ControlSensitivity * fElapsedTime;
+						break;
+					case 2:
+						MainCurve.Curves[SelectedIndex].P2y -= ControlSensitivity * fElapsedTime;
+						break;
+					case 3:
+						MainCurve.Curves[SelectedIndex].R2y -= ControlSensitivity * fElapsedTime;
+						break;
+					default:
+						break;
+					}
+				}
+				if (GetKey(olc::Key::D).bHeld)
+				{
+					switch (SelectedPart)
+					{
+					case 0:
+						MainCurve.Curves[SelectedIndex].R1x += ControlSensitivity * fElapsedTime;
+						break;
+					case 1:
+						MainCurve.Curves[SelectedIndex].P1x += ControlSensitivity * fElapsedTime;
+						break;
+					case 2:
+						MainCurve.Curves[SelectedIndex].P2x += ControlSensitivity * fElapsedTime;
+						break;
+					case 3:
+						MainCurve.Curves[SelectedIndex].R2x += ControlSensitivity * fElapsedTime;
+						break;
+					default:
+						break;
+					}
+				}
+				if (GetKey(olc::Key::A).bHeld)
+				{
+					switch (SelectedPart)
+					{
+					case 0:
+						MainCurve.Curves[SelectedIndex].R1x -= ControlSensitivity * fElapsedTime;
+						break;
+					case 1:
+						MainCurve.Curves[SelectedIndex].P1x -= ControlSensitivity * fElapsedTime;
+						break;
+					case 2:
+						MainCurve.Curves[SelectedIndex].P2x -= ControlSensitivity * fElapsedTime;
+						break;
+					case 3:
+						MainCurve.Curves[SelectedIndex].R2x -= ControlSensitivity * fElapsedTime;
+						break;
+					default:
+						break;
+					}
+				}
+			}
+			break;
+		case Adding:
+
+
+
+			break;
+		default:
+			break;
 		}
 
 		switch (SelectedPart)
@@ -86,109 +208,6 @@ public:
 			int Index = (int)(t / Samples);
 			pair<float, float> Point = MainCurve.Curves[Index].GetPoint((t / Samples) - (float)Index);
 			FillRect(Point.first, -Point.second, 1, 1, olc::RED);
-		}
-
-		if (GetKey(olc::Key::SPACE).bPressed)
-		{
-			ControlSensitivity *= 2;
-		}
-		if (GetKey(olc::Key::SPACE).bReleased)
-		{
-			ControlSensitivity /= 2;
-		}
-
-		if (GetKey(olc::Key::SHIFT).bHeld)
-		{
-
-			if (GetKey(olc::Key::D).bPressed && SelectedIndex < MainCurve.Curves.size() - 1){ SelectedIndex += 1; SelectedPart = 0; }
-			if (GetKey(olc::Key::A).bPressed && SelectedIndex > 0) { SelectedIndex -= 1; SelectedPart = 0; }
-			if (GetKey(olc::Key::W).bPressed && SelectedPart < 3 && (SelectedPart < 1 || SelectedIndex > MainCurve.Curves.size() - 2)) SelectedPart += 1;
-			if (GetKey(olc::Key::S).bPressed && SelectedPart > 0) SelectedPart -= 1;
-
-		}
-		else
-		{
-
-			if (GetKey(olc::Key::W).bHeld)
-			{
-				switch (SelectedPart)
-				{
-				case 0:
-					MainCurve.Curves[SelectedIndex].R1y += ControlSensitivity * fElapsedTime;
-					break;
-				case 1:
-					MainCurve.Curves[SelectedIndex].P1y += ControlSensitivity * fElapsedTime;
-					break;
-				case 2:
-					MainCurve.Curves[SelectedIndex].P2y += ControlSensitivity * fElapsedTime;
-					break;
-				case 3:
-					MainCurve.Curves[SelectedIndex].R2y += ControlSensitivity * fElapsedTime;
-					break;
-				default:
-					break;
-				}
-			}
-			if (GetKey(olc::Key::S).bHeld)
-			{
-				switch (SelectedPart)
-				{
-				case 0:
-					MainCurve.Curves[SelectedIndex].R1y -= ControlSensitivity * fElapsedTime;
-					break;
-				case 1:
-					MainCurve.Curves[SelectedIndex].P1y -= ControlSensitivity * fElapsedTime;
-					break;
-				case 2:
-					MainCurve.Curves[SelectedIndex].P2y -= ControlSensitivity * fElapsedTime;
-					break;
-				case 3:
-					MainCurve.Curves[SelectedIndex].R2y -= ControlSensitivity * fElapsedTime;
-					break;
-				default:
-					break;
-				}
-			}
-			if (GetKey(olc::Key::D).bHeld)
-			{
-				switch (SelectedPart)
-				{
-				case 0:
-					MainCurve.Curves[SelectedIndex].R1x += ControlSensitivity * fElapsedTime;
-					break;
-				case 1:
-					MainCurve.Curves[SelectedIndex].P1x += ControlSensitivity * fElapsedTime;
-					break;
-				case 2:
-					MainCurve.Curves[SelectedIndex].P2x += ControlSensitivity * fElapsedTime;
-					break;
-				case 3:
-					MainCurve.Curves[SelectedIndex].R2x += ControlSensitivity * fElapsedTime;
-					break;
-				default:
-					break;
-				}
-			}
-			if (GetKey(olc::Key::A).bHeld)
-			{
-				switch (SelectedPart)
-				{
-				case 0:
-					MainCurve.Curves[SelectedIndex].R1x -= ControlSensitivity * fElapsedTime;
-					break;
-				case 1:
-					MainCurve.Curves[SelectedIndex].P1x -= ControlSensitivity * fElapsedTime;
-					break;
-				case 2:
-					MainCurve.Curves[SelectedIndex].P2x -= ControlSensitivity * fElapsedTime;
-					break;
-				case 3:
-					MainCurve.Curves[SelectedIndex].R2x -= ControlSensitivity * fElapsedTime;
-					break;
-				default:
-					break;
-				}
-			}
 		}
 
 		MainCurve.MakeContinuous(true);
