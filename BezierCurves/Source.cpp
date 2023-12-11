@@ -165,29 +165,30 @@ public:
 					}
 				}
 			}
+
+			switch (SelectedPart)
+			{
+			case 0:
+				FillRect(MainCurve.Curves[SelectedIndex].R1x - 3, -MainCurve.Curves[SelectedIndex].R1y - 3, 6, 6, olc::BLUE);
+				break;
+			case 1:
+				FillRect(MainCurve.Curves[SelectedIndex].P1x - 3, -MainCurve.Curves[SelectedIndex].P1y - 3, 6, 6, olc::BLUE);
+				break;
+			case 2:
+				FillRect(MainCurve.Curves[SelectedIndex].P2x - 3, -MainCurve.Curves[SelectedIndex].P2y - 3, 6, 6, olc::BLUE);
+				break;
+			case 3:
+				FillRect(MainCurve.Curves[SelectedIndex].R2x - 3, -MainCurve.Curves[SelectedIndex].R2y - 3, 6, 6, olc::BLUE);
+				break;
+			default:
+				break;
+			}
+
 			break;
 		case Adding:
 
 
 
-			break;
-		default:
-			break;
-		}
-
-		switch (SelectedPart)
-		{
-		case 0:
-			FillRect(MainCurve.Curves[SelectedIndex].R1x - 3, -MainCurve.Curves[SelectedIndex].R1y - 3, 6, 6, olc::BLUE);
-			break;
-		case 1:
-			FillRect(MainCurve.Curves[SelectedIndex].P1x - 3, -MainCurve.Curves[SelectedIndex].P1y - 3, 6, 6, olc::BLUE);
-			break;
-		case 2:
-			FillRect(MainCurve.Curves[SelectedIndex].P2x - 3, -MainCurve.Curves[SelectedIndex].P2y - 3, 6, 6, olc::BLUE);
-			break;
-		case 3:
-			FillRect(MainCurve.Curves[SelectedIndex].R2x - 3, -MainCurve.Curves[SelectedIndex].R2y - 3, 6, 6, olc::BLUE);
 			break;
 		default:
 			break;
