@@ -55,6 +55,9 @@ public:
 			DrawLine(MainCurve.Curves[i].R2x, -MainCurve.Curves[i].R2y, MainCurve.Curves[i].P2x, -MainCurve.Curves[i].P2y, olc::VERY_DARK_GREY);
 		}
 
+		if (GetKey(olc::Key::E).bPressed) ControlSensitivity += 4;
+		if (GetKey(olc::Key::Q).bPressed) ControlSensitivity -= 4;
+
 		if (GetKey(olc::Key::SPACE).bPressed) ControlSensitivity *= 2;
 		if (GetKey(olc::Key::SPACE).bReleased) ControlSensitivity /= 2;
 
@@ -76,6 +79,11 @@ public:
 			}
 			else
 			{
+				if (GetKey(olc::Key::DEL).bPressed && MainCurve.Curves.size() > 1)
+				{
+					MainCurve.Curves.erase(MainCurve.Curves.begin() + SelectedIndex);
+					SelectedIndex -= 1;
+				}
 
 				if (GetKey(olc::Key::W).bHeld)
 				{
