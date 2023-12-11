@@ -28,7 +28,7 @@ private:
 
 	int Samples = 500;
 
-	pair<int, int> AddingPoint = { 50, 50 };
+	pair<float, float> AddingPos = { 50, 50 };
 
 	enum Actions
 	{
@@ -41,8 +41,8 @@ private:
 public:
 	bool OnUserCreate() override
 	{
-		MainCurve.Add(150, -30, 130, -60);
-		MainCurve.Add(200, -120, 150, -180);
+		//MainCurve.Add(150, -30, 130, -60);
+		//MainCurve.Add(200, -120, 150, -180);
 		return true;
 	}
 
@@ -57,27 +57,22 @@ public:
 			DrawLine(MainCurve.Curves[i].R2x, -MainCurve.Curves[i].R2y, MainCurve.Curves[i].P2x, -MainCurve.Curves[i].P2y, olc::VERY_DARK_GREY);
 		}
 
-		if (GetKey(olc::Key::R).bPressed) CurrentAction = Adding;
+		if (GetKey(olc::Key::SPACE).bPressed) ControlSensitivity *= 2;
+		if (GetKey(olc::Key::SPACE).bReleased) ControlSensitivity /= 2;
 
 		switch (CurrentAction)
 		{
 		case Moving:
 
-			if (GetKey(olc::Key::SPACE).bPressed)
-			{
-				ControlSensitivity *= 2;
-			}
-			if (GetKey(olc::Key::SPACE).bReleased)
-			{
-				ControlSensitivity /= 2;
-			}
+			if (GetKey(olc::Key::R).bPressed) CurrentAction = Adding;
 
 			if (GetKey(olc::Key::SHIFT).bHeld)
 			{
 
 				if (GetKey(olc::Key::D).bPressed && SelectedIndex < MainCurve.Curves.size() - 1) { SelectedIndex += 1; SelectedPart = 0; }
 				if (GetKey(olc::Key::A).bPressed && SelectedIndex > 0) { SelectedIndex -= 1; SelectedPart = 0; }
-				if (GetKey(olc::Key::W).bPressed && SelectedPart < 3 && (SelectedPart < 1 || SelectedIndex > MainCurve.Curves.size() - 2)) SelectedPart += 1;
+				if (MainCurve.Curves.size() > 1) { if (GetKey(olc::Key::W).bPressed && SelectedPart < 3 && (SelectedPart < 1 || SelectedIndex > MainCurve.Curves.size() - 2)) SelectedPart += 1; }
+				else if (GetKey(olc::Key::W).bPressed && SelectedPart < 3) SelectedPart += 1;
 				if (GetKey(olc::Key::S).bPressed && SelectedPart > 0) SelectedPart -= 1;
 
 			}
@@ -187,7 +182,20 @@ public:
 			break;
 		case Adding:
 
+			if (GetKey(olc::Key::W).bHeld) AddingPos.second -= ControlSensitivity * fElapsedTime;
+			if (GetKey(olc::Key::S).bHeld) AddingPos.second += ControlSensitivity * fElapsedTime;
+			if (GetKey(olc::Key::D).bHeld) AddingPos.first += ControlSensitivity * fElapsedTime;
+			if (GetKey(olc::Key::A).bHeld) AddingPos.first -= ControlSensitivity * fElapsedTime;
 
+			if (GetKey(olc::Key::R).bPressed)
+			{
+				MainCurve.Add(AddingPos.first, -AddingPos.second, AddingPos.first, -AddingPos.second + 10);
+				SelectedPart = 0;
+				CurrentAction = Moving;
+			}
+			if (GetKey(olc::Key::ESCAPE).bPressed) CurrentAction = Moving;
+
+			FillRect(AddingPos.first - 3, AddingPos.second - 3, 6, 6, olc::BLUE);
 
 			break;
 		default:
@@ -212,8 +220,6 @@ public:
 		}
 
 		MainCurve.MakeContinuous(true);
-
-		//MainCurve.Curves[0].R2y += 5 * fElapsedTime;
 		
 		return true;
 	}
