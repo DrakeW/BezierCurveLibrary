@@ -41,8 +41,6 @@ private:
 public:
 	bool OnUserCreate() override
 	{
-		//MainCurve.Add(150, -30, 130, -60);
-		//MainCurve.Add(200, -120, 150, -180);
 		return true;
 	}
 
