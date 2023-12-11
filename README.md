@@ -50,6 +50,7 @@ Example Controls:
  - E = Faster
  - R = Add Point
  - Delete = Delete Selected Point
+ - Arrow Keys = Change Camera Position
 
 --Extra Files--
 - olcPixelGameEngine.h
