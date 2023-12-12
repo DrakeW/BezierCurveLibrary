@@ -35,6 +35,22 @@ Classes:
              - Description
                  - Uses the same process described in the add function on all of the Bezier Curves in the spline to make sure that the first and second derivitave of both are continuous. Priority defines wether it should take control of the back curves or the front curves.
 
+Example Controls:
+ - When Shift is held:
+     - W = Next Handle
+     - S = Last Handle
+     - D = Next Curve
+     - A = Last Curve
+ - When Shift is not held:
+     - W,A,S,D to move selected point
+ - When Adding a point
+     - R = Confirm
+     - Escape = Cancel
+ - Q = Slower
+ - E = Faster
+ - R = Add Point
+ - Delete = Delete Selected Point
+ - Arrow Keys = Change Camera Position
 
 --Extra Files--
 - olcPixelGameEngine.h
