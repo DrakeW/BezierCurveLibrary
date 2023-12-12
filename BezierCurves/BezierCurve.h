@@ -47,7 +47,7 @@ public:
 		Curves.push_back(Curve(Curves[LastIndex].R2x, Curves[LastIndex].R2y, Rx, Ry, Curves[LastIndex].R2x + (Curves[LastIndex].R2x - Curves[LastIndex].P2x), Curves[LastIndex].R2y + (Curves[LastIndex].R2y - Curves[LastIndex].P2y), Px, Py));
 	}
 
-	void MakeContinuous(bool BackPriority = false)
+	void MakeContinuous(bool BackPriority = false, bool Loop = false)
 	{
 		if (!BackPriority)
 		{

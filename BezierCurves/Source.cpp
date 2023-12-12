@@ -183,7 +183,7 @@ public:
 				FillRect(MainCurve.Curves[SelectedIndex].P1x - 3 + Offset.first, -MainCurve.Curves[SelectedIndex].P1y - 3 + Offset.second, 6, 6, olc::BLUE);
 				break;
 			case 2:
-				FillRect(MainCurve.Curves[SelectedIndex].P2x - 3 + Offset.first, -MainCurve.Curves[SelectedIndex].P2y - 3 + Offset.first, 6, 6, olc::BLUE);
+				FillRect(MainCurve.Curves[SelectedIndex].P2x - 3 + Offset.first, -MainCurve.Curves[SelectedIndex].P2y - 3 + Offset.second, 6, 6, olc::BLUE);
 				break;
 			case 3:
 				FillRect(MainCurve.Curves[SelectedIndex].R2x - 3 + Offset.first, -MainCurve.Curves[SelectedIndex].R2y - 3 + Offset.second, 6, 6, olc::BLUE);
