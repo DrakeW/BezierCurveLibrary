@@ -30,7 +30,7 @@ private:
 
 	pair<float, float> AddingPos = { 50, 50 };
 
-	pair<float, float> Offset = { -20, 0 };
+	pair<float, float> Offset = { 0, 0 };
 
 	enum Actions
 	{
