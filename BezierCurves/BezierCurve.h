@@ -68,18 +68,35 @@ public:
 		}
 		else
 		{
-			for (int i = Curves.size() - 2; i >= 0; i--)
+			for (int i = Curves.size() - 1; i >= 0; i--)
 			{
-				if (Curves[i].R2x != Curves[i + 1].R1x || Curves[i].R2y != Curves[i + 1].R1y)
+				if (i != Curves.size() - 1)
 				{
-					Curves[i].R2x = Curves[i + 1].R1x;
-					Curves[i].R2y = Curves[i + 1].R1y;
-				}
+					if (Curves[i].R2x != Curves[i + 1].R1x || Curves[i].R2y != Curves[i + 1].R1y)
+					{
+						Curves[i].R2x = Curves[i + 1].R1x;
+						Curves[i].R2y = Curves[i + 1].R1y;
+					}
 
-				if (Curves[i].P2x != Curves[i + 1].R1x + (Curves[i + 1].R1x - Curves[i + 1].P1x) || Curves[i].P2y != Curves[i + 1].R1y + (Curves[i + 1].R1y - Curves[i + 1].P1y))
+					if (Curves[i].P2x != Curves[i + 1].R1x + (Curves[i + 1].R1x - Curves[i + 1].P1x) || Curves[i].P2y != Curves[i + 1].R1y + (Curves[i + 1].R1y - Curves[i + 1].P1y))
+					{
+						Curves[i].P2x = Curves[i + 1].R1x + (Curves[i + 1].R1x - Curves[i + 1].P1x);
+						Curves[i].P2y = Curves[i + 1].R1y + (Curves[i + 1].R1y - Curves[i + 1].P1y);
+					}
+				}
+				else if (Curves.size() > 1 && Loop)
 				{
-					Curves[i].P2x = Curves[i + 1].R1x + (Curves[i + 1].R1x - Curves[i + 1].P1x);
-					Curves[i].P2y = Curves[i + 1].R1y + (Curves[i + 1].R1y - Curves[i + 1].P1y);
+					if (Curves[i].R2x != Curves[0].R1x || Curves[i].R2y != Curves[0].R1y)
+					{
+						Curves[i].R2x = Curves[0].R1x;
+						Curves[i].R2y = Curves[0].R1y;
+					}
+
+					if (Curves[i].P2x != Curves[0].R1x + (Curves[0].R1x - Curves[0].P1x) || Curves[i].P2y != Curves[0].R1y + (Curves[0].R1y - Curves[0].P1y))
+					{
+						Curves[i].P2x = Curves[0].R1x + (Curves[0].R1x - Curves[0].P1x);
+						Curves[i].P2y = Curves[0].R1y + (Curves[0].R1y - Curves[0].P1y);
+					}
 				}
 			}
 		}
