@@ -208,20 +208,28 @@ public:
 			break;
 		case Adding:
 
-			if (GetKey(olc::Key::W).bHeld) AddingPos.second -= ControlSensitivity * fElapsedTime;
-			if (GetKey(olc::Key::S).bHeld) AddingPos.second += ControlSensitivity * fElapsedTime;
-			if (GetKey(olc::Key::D).bHeld) AddingPos.first += ControlSensitivity * fElapsedTime;
-			if (GetKey(olc::Key::A).bHeld) AddingPos.first -= ControlSensitivity * fElapsedTime;
-
-			if (GetKey(olc::Key::R).bPressed)
+			if (Loop)
 			{
-				MainCurve.Add(AddingPos.first, -AddingPos.second, AddingPos.first, -AddingPos.second + 10);
-				SelectedPart = 0;
-				CurrentAction = Moving;
+				AddingPos = MainCurve.Curves[SelectedIndex].GetPoint(0.5);
+				MainCurve.Add(AddingPos.first, AddingPos.second, AddingPos.first, AddingPos.second + 10, SelectedIndex);
 			}
-			if (GetKey(olc::Key::ESCAPE).bPressed) CurrentAction = Moving;
+			else
+			{
+				if (GetKey(olc::Key::W).bHeld) AddingPos.second -= ControlSensitivity * fElapsedTime;
+				if (GetKey(olc::Key::S).bHeld) AddingPos.second += ControlSensitivity * fElapsedTime;
+				if (GetKey(olc::Key::D).bHeld) AddingPos.first += ControlSensitivity * fElapsedTime;
+				if (GetKey(olc::Key::A).bHeld) AddingPos.first -= ControlSensitivity * fElapsedTime;
 
-			FillRect(AddingPos.first - 3 + Offset.first, AddingPos.second - 3 + Offset.second, 6, 6, olc::BLUE);
+				if (GetKey(olc::Key::R).bPressed)
+				{
+					MainCurve.Add(AddingPos.first, -AddingPos.second, AddingPos.first, -AddingPos.second + 10);
+					SelectedPart = 0;
+					CurrentAction = Moving;
+				}
+				if (GetKey(olc::Key::ESCAPE).bPressed) CurrentAction = Moving;
+
+				FillRect(AddingPos.first - 3 + Offset.first, AddingPos.second - 3 + Offset.second, 6, 6, olc::BLUE);
+			}
 
 			break;
 		default:

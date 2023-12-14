@@ -43,10 +43,22 @@ public:
 
 	void Add(int Rx, int Ry, int Px, int Py, int Index = -1)
 	{
-		int LastIndex;
-		if (Index > 0 && Curves.size() - 1 > Index) LastIndex = Index - 1;
-		else LastIndex = Curves.size() - 1;
-		Curves.insert(Curves.begin() + (LastIndex + 1), Curve(Curves[LastIndex].R2x, Curves[LastIndex].R2y, Rx, Ry, Curves[LastIndex].R2x + (Curves[LastIndex].R2x - Curves[LastIndex].P2x), Curves[LastIndex].R2y + (Curves[LastIndex].R2y - Curves[LastIndex].P2y), Px, Py));
+
+		switch (Index)
+		{
+		case -1:
+			int LastIndex = Curves.size() - 1;
+			Curves.push_back(Curve(Curves[LastIndex].R2x, Curves[LastIndex].R2y, Rx, Ry, Curves[LastIndex].R2x + (Curves[LastIndex].R2x - Curves[LastIndex].P2x), Curves[LastIndex].R2y + (Curves[LastIndex].R2y - Curves[LastIndex].P2y), Px, Py));
+			break;
+		default:
+			if (Index > 0 && Curves.size() - 1 > Index)
+			{
+				int LastIndex = Index - 1;
+				Curves.insert(Curves.begin() + (LastIndex + 1), Curve(Curves[LastIndex].R2x, Curves[LastIndex].R2y, Rx, Ry, Curves[LastIndex].R2x + (Curves[LastIndex].R2x - Curves[LastIndex].P2x), Curves[LastIndex].R2y + (Curves[LastIndex].R2y - Curves[LastIndex].P2y), Px, Py));
+
+			}
+			break;
+		}
 	}
 
 	void MakeContinuous(bool BackPriority = false, bool Loop = false)
