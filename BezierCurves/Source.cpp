@@ -32,6 +32,8 @@ private:
 
 	pair<float, float> Offset = { 0, 0 };
 
+	bool Loop = false;
+
 	enum Actions
 	{
 		Moving,
@@ -74,13 +76,24 @@ public:
 
 			if (GetKey(olc::Key::R).bPressed) CurrentAction = Adding;
 
+			if (GetKey(olc::Key::L).bPressed && MainCurve.Curves.size() > 1) { if (Loop) Loop = false; else Loop = true; }
+
+			if (MainCurve.Curves.size() == 1) Loop = false;
+
 			if (GetKey(olc::Key::SHIFT).bHeld)
 			{
 
 				if (GetKey(olc::Key::D).bPressed && SelectedIndex < MainCurve.Curves.size() - 1) { SelectedIndex += 1; SelectedPart = 0; }
 				if (GetKey(olc::Key::A).bPressed && SelectedIndex > 0) { SelectedIndex -= 1; SelectedPart = 0; }
-				if (MainCurve.Curves.size() > 1) { if (GetKey(olc::Key::W).bPressed && SelectedPart < 3 && (SelectedPart < 1 || SelectedIndex > MainCurve.Curves.size() - 2)) SelectedPart += 1; }
-				else if (GetKey(olc::Key::W).bPressed && SelectedPart < 3) SelectedPart += 1;
+				if (Loop)
+				{
+					if (GetKey(olc::Key::W).bPressed && !SelectedPart) SelectedPart += 1;
+				}
+				else
+				{
+					if (MainCurve.Curves.size() > 1) { if (GetKey(olc::Key::W).bPressed && SelectedPart < 3 && (SelectedPart < 1 || SelectedIndex > MainCurve.Curves.size() - 2)) SelectedPart += 1; }
+					else if (GetKey(olc::Key::W).bPressed && SelectedPart < 3) SelectedPart += 1;
+				}
 				if (GetKey(olc::Key::S).bPressed && SelectedPart > 0) SelectedPart -= 1;
 
 			}
@@ -221,7 +234,7 @@ public:
 			FillRect(MainCurve.Curves[d].R2x - 2 + Offset.first, -MainCurve.Curves[d].R2y - 2 + Offset.second, 4, 4, olc::MAGENTA);
 			FillRect(MainCurve.Curves[d].P1x - 2 + Offset.first, -MainCurve.Curves[d].P1y - 2 + Offset.second, 4, 4, olc::GREEN);
 
-			if (d == MainCurve.Curves.size() - 1)
+			if (d == MainCurve.Curves.size() - 1 && !Loop)
 				FillRect(MainCurve.Curves[d].P2x - 2 + Offset.first, -MainCurve.Curves[d].P2y - 2 + Offset.second, 4, 4, olc::RED);
 		}
 
@@ -232,7 +245,7 @@ public:
 			FillRect(Point.first + Offset.first, -Point.second + Offset.second, 1, 1, olc::RED);
 		}
 
-		MainCurve.MakeContinuous(true);
+		MainCurve.MakeContinuous(true, Loop);
 		
 		return true;
 	}
