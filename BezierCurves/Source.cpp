@@ -212,6 +212,7 @@ public:
 			{
 				AddingPos = MainCurve.Curves[SelectedIndex].GetPoint(0.5);
 				MainCurve.Add(AddingPos.first, AddingPos.second, AddingPos.first, AddingPos.second + 10, SelectedIndex);
+				CurrentAction = Moving;
 			}
 			else
 			{

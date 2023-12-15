@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <iostream>
 
 class Curve
 {
@@ -46,20 +47,16 @@ public:
 
 		int LastIndex;
 
-		switch (Index)
+
+		if (Index < 1)
 		{
-		case -1:
 			LastIndex = Curves.size() - 1;
 			Curves.push_back(Curve(Curves[LastIndex].R2x, Curves[LastIndex].R2y, Rx, Ry, Curves[LastIndex].R2x + (Curves[LastIndex].R2x - Curves[LastIndex].P2x), Curves[LastIndex].R2y + (Curves[LastIndex].R2y - Curves[LastIndex].P2y), Px, Py));
-			break;
-		default:
-			if (Index > 0 && Curves.size() - 1 > Index)
-			{
-				LastIndex = Index - 1;
-				Curves.insert(Curves.begin() + (LastIndex + 1), Curve(Curves[LastIndex].R2x, Curves[LastIndex].R2y, Rx, Ry, Curves[LastIndex].R2x + (Curves[LastIndex].R2x - Curves[LastIndex].P2x), Curves[LastIndex].R2y + (Curves[LastIndex].R2y - Curves[LastIndex].P2y), Px, Py));
-
-			}
-			break;
+		}
+		else if (Curves.size() - 2 >= Index)
+		{
+			LastIndex = Index - 1;
+			Curves.insert(Curves.begin() + Index, Curve(Curves[LastIndex].R2x, Curves[LastIndex].R2y, Rx, Ry, Curves[LastIndex].R2x + (Curves[LastIndex].R2x - Curves[LastIndex].P2x), Curves[LastIndex].R2y + (Curves[LastIndex].R2y - Curves[LastIndex].P2y), Px, Py));
 		}
 	}
 
